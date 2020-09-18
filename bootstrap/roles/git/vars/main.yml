@@ -1,0 +1,13 @@
+---
+source_dependencies:
+  - gettext-devel
+  - expat-devel
+  - curl-devel
+  - zlib-devel
+  - perl-devel
+  - perl-CPAN 
+  - openssl-devel
+  - make
+  - autoconf
+  - gcc
+  

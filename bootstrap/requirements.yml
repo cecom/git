@@ -1,0 +1,22 @@
+---
+# jenkins requirements
+- src: https://github.com/geerlingguy/ansible-role-jenkins
+  scm: git
+  version: 3.6.0
+
+#  f5b11fbacfa17069163e29449e51a4a737aa4cd0
+
+# gerrit requirements
+- src: https://github.com/cecom/ansible-gerrit
+  scm: git
+  version: anpassungen
+  
+# mysql requirements
+- src: https://github.com/geerlingguy/ansible-role-mysql
+  scm: git
+  version: 2.8.1
+
+# sonarqube requirements
+- src: https://github.com/geerlingguy/ansible-role-sonar
+  scm: git
+  version: 1.4.1

@@ -1,0 +1,8 @@
+---
+workspace: /tmp
+
+git_install_path: "/usr"
+git_version: "2.28.0"
+
+#also set at runtime if the installed version does not match
+git_reinstall_from_source: false

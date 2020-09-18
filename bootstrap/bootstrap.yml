@@ -1,0 +1,105 @@
+---
+- hosts: all
+  tasks:
+
+  #Add Repo for Libs
+  - name: Install EPEL Release
+    become: true
+    yum:
+      name: epel-release
+      state: latest
+   
+  #X11 forwarding
+  - name: Install x11-auth
+    become: true
+    yum:
+      name:  xorg-x11-xauth
+      state: latest
+      
+  - name: Install x11-apps
+    become: true
+    yum:
+      name:  xorg-x11-apps.x86_64
+      state: latest
+  
+  #Not all locale in the base box
+  - name: Reinstall glibc-common for missing locale
+    become: true
+    command: yum -y reinstall glibc-common
+  
+  #install some packages for the gui's we use for gedit, p4merge, eclipse
+  - name: Install GUI packages
+    become: true
+    yum:
+      name:  
+        - dbus
+        - dbus-x11
+        - PackageKit-gtk3-module
+        - libcanberra-gtk3
+        - xkeyboard-config
+        - gnu-free-mono-fonts
+        - fontconfig
+        - gnu-free-fonts-common
+        - gnu-free-sans-fonts
+        - google-crosextra-caladea-fonts
+        - fontpackages-filesystem
+        - gnu-free-serif-fonts
+        - open-sans-fonts
+        - mesa-dri-drivers
+        - tk
+        - unzip
+        - zip
+        - net-tools
+      state: latest
+  
+  #gedit 
+  - name: Install gedit
+    become: true
+    yum:
+      name:  gedit
+      state: latest
+      
+  #notepadqq 
+  - name: Add repository for notepadqq
+    yum_repository:
+      name: sea-devel
+      description: repo for notepadqq
+      baseurl: https://sea.fedorapeople.org/repo/
+  
+  - name: Install notepadqq
+    become: true
+    yum:
+      name:  notepadqq
+      state: latest   
+      disable_gpg_check: true
+
+  #Git
+  - name: Install Git
+    include_role: 
+      name: git
+  
+  #P4Merge
+  - name: Create P4Merge Folder
+    file:
+      path: /opt/p4merge
+      state: directory
+      mode: 0755
+
+  - name: Download P4Merge
+    unarchive:
+      src: http://cdist2.perforce.com/perforce/r17.3/bin.linux26x86_64/p4v.tgz
+      dest: /opt/p4merge
+      remote_src: yes
+      creates: /opt/p4merge/p4v-2017.3.1654916/bin/p4merge
+      
+  - file:
+      src: /opt/p4merge/p4v-2017.3.1654916/bin/p4merge
+      dest: /usr/local/bin/p4merge
+      state: link
+  
+
+
+      
+      
+      
+

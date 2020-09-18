@@ -1,0 +1,66 @@
+---
+- name: Ensure git's dependencies are installed.
+  become: yes
+  yum: "name={{ item }} state=installed"
+  with_items: "{{ source_dependencies }}"
+
+- name: Get installed version
+  command: >
+    git --version
+    warn=no
+  changed_when: false
+  failed_when: false
+  check_mode: no
+  register: git_installed_version
+
+- name: Force git install if the version numbers do not match
+  set_fact:
+    git_reinstall_from_source: true
+  when:
+    - git_installed_version|success and (git_installed_version.stdout | regex_replace("^.*?([0-9\.]+)$", "\\1") | version_compare(git_version, operator="!="))
+
+- name: Download git.
+  get_url:
+    url: "https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz"
+    dest: "{{ workspace }}/git-{{ git_version }}.tar.gz"
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Expand git archive.
+  unarchive:
+    src: "{{ workspace }}/git-{{ git_version }}.tar.gz"
+    dest: "{{ workspace }}"
+    creates: "{{ workspace }}/git-{{ git_version }}/README"
+    copy: no
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Make git.
+  command:  >
+    make
+    chdir={{ workspace }}/git-{{ git_version }}
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Configure git.
+  command: >
+    ./configure --prefix={{ git_install_path }}
+    chdir={{ workspace }}/git-{{ git_version }}
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Install git.
+  become: true
+  command: >
+    make install
+    chdir={{ workspace }}/git-{{ git_version }}
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Clean up folder.
+  file:
+    path: "{{ workspace }}/git-{{ git_version }}"
+    state: absent
+  when:  git_installed_version|failed or git_reinstall_from_source
+
+- name: Clean download archive.
+  file:
+    path: "{{ workspace }}/git-{{ git_version }}.tar.gz"
+    state: absent
+  when:  git_installed_version|failed or git_reinstall_from_source
+
