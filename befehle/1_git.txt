@@ -7,3 +7,11 @@ git config --global core.editor /usr/bin/gedit
 git config --global diff.tool p4mergetool
 git config --global difftool.prompt false
 git config --global difftool.p4mergetool.cmd '/usr/local/bin/p4merge -dw -tw 4 -C "utf8" $LOCAL $REMOTE'
+
+== Aliase
+[alias]
+    #Zeigt den Status der Workarea und des Index an. Eine Zeile pro Datei.
+    s = status -sb
+    
+    #Zeigt die Commit Historie formatiert an. Eine Zeile pro Commit.
+    lg = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr %an)%Creset' --abbrev-commit --date=relative
