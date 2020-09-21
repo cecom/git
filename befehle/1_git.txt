@@ -1,3 +1,9 @@
 == Editor
 git config --global core.editor /usr/bin/notepadqq
 git config --global core.editor /usr/bin/gedit
+
+
+== Difftool einrichten
+git config --global diff.tool p4mergetool
+git config --global difftool.prompt false
+git config --global difftool.p4mergetool.cmd '/usr/local/bin/p4merge -dw -tw 4 -C "utf8" $LOCAL $REMOTE'
