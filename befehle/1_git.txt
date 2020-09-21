@@ -25,3 +25,13 @@ Add to the ~/.bashrc:
   GIT_PROMPT_SHOW_UPSTREAM=0
   GIT_PROMPT_THEME=Single_line
   source ~/.bash-git-prompt/gitprompt.sh
+
+
+== Mergetool einrichten
+git config --global merge.tool p4mergetool
+git config --global merge.renormalize true
+git config --global merge.renamelimit 10000 
+git config --global mergetool.keepBackup false
+git config --global mergetool.keepTemporaries false
+git config --global mergetool.prompt false
+git config --global mergetool.p4mergetool.cmd '/usr/local/bin/p4merge -dw -tw 4 -C "utf8" "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
