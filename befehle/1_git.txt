@@ -104,7 +104,7 @@ for i in {1..100} ; do echo "foo $i" >> foo.txt; git add foo.txt; git commit -am
 echo "mist" >> foo.txt
 
 
-for i in {1..50} ; do echo "foo $i" >> foo.txt; git add foo.txt; git commit -am "foo $i"; done
+for i in {101..150} ; do echo "foo $i" >> foo.txt; git add foo.txt; git commit -am "foo $i"; done
 
 
 == test.sh
